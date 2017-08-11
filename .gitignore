@@ -1,4 +1,4 @@
-nbproject
+nbproject*
 node_modules
 npm-debug.log
 build/index.js.map
