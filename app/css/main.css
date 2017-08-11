@@ -1,0 +1,94 @@
+.tree-bar-chart { position: relative; overflow: hidden; display: flex; align-items: center; padding: 20px 0 32px 0; font-family: Arial; transition: min-height .3s ease;
+  .tbc-xaxis { position: absolute; top: 0; left: 140px; width: calc(100% - 180px); height: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #D8D8D8; 
+    div { position: relative; width: 1px; height: calc(100%); transform: translateY(100%); border-left: 1px dotted #D8D8D8; transition: transform .3s .3s ease;
+      &:first-child { border-left: 1px solid #D8D8D8; }    
+      &:last-child { border-left: none; border-right: 1px dotted #D8D8D8; }
+      span { position: absolute; bottom: -22px; left: -10px; width: 20px; opacity: 0; max-width: 20px; text-align: center; color: #666666; transition: opacity .3s ease; }
+    }
+    
+    &:after { position: absolute; content: ''; bottom: 22px; left: 0; width: 100%; height: 1px; transform: translateX(130%); background: #D8D8D8; transition: transform .3s ease; }
+  }
+  
+  .tbc-no-data { position: absolute; top: 50%; left: calc(50% - 70px); opacity: 1; font-size: 18px; color: #666; transition: opacity .3s ease; }
+  
+  .tbc-data-container { width: 100%; }
+  .tbc-bar { position: relative; width: 100%; margin: 10px 0;
+    .tbc-b-label { position: relative; display: flex; align-items: center; height: 20px; margin: 0 5px; max-width: 135px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #666; transition: color .3s ease;
+      span { display: block; padding-right: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .tbc-expand-button { position: absolute; top: calc(50% - 8px); right: 5px; width: 16px; height: 16px; box-sizing: border-box; border: 1px solid #B8B8B8; border-radius: 2px; cursor: pointer; transition: box-shadow .3s ease;
+        &:before, &:after { position: absolute; content: ''; background: #D2D2D2; transition: background .3s ease; }
+        &:before { width: 10px; height: 2px; top: 6px; left: 2px; }
+        &:after { width: 2px; height: 10px; top: 2px; left: 6px; }
+        &:hover { box-shadow: 0 0 4px #B8B8B8; 
+          &:before, &:after { background: #009966; }
+        }
+      }
+    }
+    .tbc-b-wrapper { position: absolute; top: 0; left: 140px; width: calc(100% - 180px); }
+    .tbc-b-value { position: relative; width: 0; height: 20px; cursor: pointer; transition: width .3s ease, opacity .3s ease, background .3s ease; 
+      &:after { position: absolute; display: flex; justify-content: center; align-items: center; content: attr(data-value); width: 50px; height: 100%; top: 0; right: -60px; z-index: 2; transform: translateX(10px); background: inherit; opacity: 0; color: #fff; font-size: 10px; transition: opacity .3s ease, background .3s ease, transform .3s ease; }
+      &:before { position: absolute; content: ''; width: 14px; height: 14px; top: calc(50% - 7px); right: -17px; z-index: 1; transform: rotate(45deg) translateX(5px) translateY(-5px); background: inherit; opacity: 0; transition: opacity .3s ease, background .3s ease, transform .3s ease; }
+    }
+    
+    &.tbc-is-hover {
+      .tbc-b-value {
+        &:after { opacity: 1;  } 
+        &:after { transform: translateX(0); }
+        &:before { transform: rotate(45deg) translateX(0); }
+      }    
+    }
+    
+    &.tbc-has-items {
+      .tbc-b-label { cursor: pointer;
+        &:hover { color: #009966; }
+      }   
+    }
+  }
+  
+  .tbc-parent { position: absolute; display: flex; align-items: center; padding-left: 40px; top: 0px; left: 140px; width: calc(100% - 180px); height: 30px; background: white; transform: translateY(100%); opacity: 0; transition: opacity .3s ease, transform .3s ease; 
+    .tbc-p-collapse-button { position: absolute; top: calc(50% - 8px); left: 10px; width: 16px; height: 16px; box-sizing: border-box; border: 1px solid #B8B8B8; border-radius: 2px; cursor: pointer; transition: box-shadow .3s ease;
+      &:before { position: absolute; content: ''; background: #DA5E38; transition: background .3s ease; }
+      &:before { width: 10px; height: 2px; top: 6px; left: 2px; }
+    }
+    .tbc-p-label { color: #009966; cursor: pointer; }
+    
+    &:before, &:after { position: absolute; content: ''; left: 14px; background: #D8D8D8; }
+    &:before { top: 50%; left: -14px; width: 20px; height: 1px; }
+    &:after { top: 50%; left: -14px; width: 1px; height: 20px; }
+    
+    &:hover .tbc-p-collapse-button { box-shadow: 0 0 4px #B8B8B8; 
+      &:before { background: #009966; }
+    }
+  }
+  
+  .tbc-loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(251, 251, 251, .8); opacity: 0; z-index: -1; transition: z-index .0s .3s, opacity .3s ease; 
+      &:before { position: absolute; content: ''; top: calc(50% - 20px); left: calc(50% - 20px); width: 40px; height: 40px; border: .25rem solid rgba(127, 178, 229, 0.3); border-radius: 50%; border-top-color: rgba(127, 178, 229, 1); animation: tbc-circle 1s infinite linear; }
+  }
+  
+  &.tbc-has-parent .tbc-parent { transform: translateY(0); opacity: 1; } 
+  
+  &.tbc-has-data {
+    .tbc-xaxis {
+      div { transform: translateY(-22px); transition: transform .3s ease;
+        span { opacity: 1; transition: opacity .3s .3s ease; }
+      }
+      &:after { transform: translateX(0); transition: transform .3s .3s ease; }
+    }
+    .tbc-no-data { opacity: 0; }
+  }
+  
+  &.tbc-hide-no-content .tbc-no-data { display: none; }
+  
+  &.tbc-has-on-item-click .tbc-bar .tbc-b-label { cursor: pointer; }
+  
+  &.tbc-is-loading {
+    .tbc-no-data { display: none; }
+    .tbc-loader { z-index: 10; opacity: 1; transition: opacity .3s ease; }
+  }
+
+}
+
+@keyframes tbc-circle {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
