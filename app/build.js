@@ -1,4 +1,4 @@
-import SimpleBarChart from './simple-bar-chart/SimpleBarChart';
+import TreeBarChart from './tree-bar-chart/TreeBarChart';
 
 (function (root, factory) {
   'use strict';
@@ -7,6 +7,6 @@ import SimpleBarChart from './simple-bar-chart/SimpleBarChart';
   } else if (typeof define === 'function' && define.amd) {
     define(factory);
   } else {
-    root.SimpleBarChart = factory;
+    root.TreeBarChart = factory;
   }
-}(this, SimpleBarChart));
+}(this, TreeBarChart));
