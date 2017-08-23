@@ -1,6 +1,6 @@
 import {Component} from 'react';
 
-import {percent, shadeBlend, isDefined, classes} from '../utils/utils';
+import {percent, shadeBlend, isDefined, classes, isFunction} from '../utils/utils';
 
 export default class Bar extends Component {
   constructor(props) {
@@ -32,18 +32,21 @@ export default class Bar extends Component {
      this.setState({hover: false});
   }
   onExpandClick(){
-    const {setData, data, value, label, items, onItemClick, onItemExpand} = this.props;
+    const {setData, data, value, label, items, onItemClick, onItemExpand, setParent} = this.props;
     const parent = {value, label, data};
     
     if(isDefined(items)){
       setData(items, parent);
       onItemExpand(items, parent);
     } else {
-      onItemClick(this.props);
+      let parent = onItemClick(this.props);
+      if(isDefined(parent)){
+        setParent(parent);
+      }
     }
   }
   render() {
-    const {label, max, barHeight, barColor, barMargin, items} = this.props;
+    const {label, max, barHeight, barColor, barMargin, items, hasChildren = false} = this.props;
     const {value, hover} = this.state;
     const barStyle = {
       marginTop: barMargin,
@@ -58,7 +61,7 @@ export default class Bar extends Component {
     const labelStyle = {
       height: barHeight
     };
-    const hasItems = isDefined(items);
+    const hasItems = isDefined(items) || hasChildren;
     const className = {
       'tbc-is-hover': hover,
       'tbc-has-items': hasItems
@@ -75,6 +78,7 @@ export default class Bar extends Component {
                 </div>
                 <div className="tbc-b-wrapper">
                     <div className="tbc-b-value"
+                         onClick={() => this.onExpandClick()}
                          onMouseEnter={() => this.onMouseEnter()}
                          onMouseLeave={() => this.onMouseLeave()}
                          data-value={value}

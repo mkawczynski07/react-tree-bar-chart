@@ -5,6 +5,41 @@ import TreeBarChart from './tree-bar-chart/TreeBarChart';
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.mockedItems = {
+      noParent: [
+        {
+          id: 1,
+          label: 'America 3',
+          value: 89,
+          hasChildren: true
+        },
+        {
+          id: 2,
+          label: 'America 4',
+          value: 89
+        },
+        {
+          id: 3,
+          label: 'America 5',
+          value: 89,
+          hasChildren: true
+        }
+      ],
+      [1]: [
+        {id: 4, label: 'Poland', value: 30, parentId: 1},
+        {id: 5, label: 'Spain', value: 30, parentId: 1},
+        {id: 6, label: 'German', value: 20, hasChildren: true, parentId: 1}
+      ],
+      [3]: [
+        {id: 7, label: 'Portugal', value: 15, parentId: 3},
+        {id: 8, label: 'France', value: 13, parentId: 3},
+        {id: 9, label: 'Russia', value: 15, parentId: 3}
+      ],
+      [6]: [
+        {id: 10, label: 'America 7', value: 234, parentId: 6},
+        {id: 11, label: 'America 8', value: 105, parentId: 6}
+      ]
+    };
     this.state = {
       isLoading: false,
       asyncData: [],
@@ -65,10 +100,10 @@ export default class App extends Component {
           label: 'America 9',
           value: 150
         }
-
       ],
-      orientation: 'vertical'
-    }
+      visibleData: this.mockedItems.noParent,
+      nestedLoading: false
+    };
   }
   generateRandomData() {
     this.setState({
@@ -81,7 +116,7 @@ export default class App extends Component {
         ...item,
         value: Math.floor((Math.random() * 100) + 1),
         items: item.items ? this.getRandomItems(item.items) : void 0
-      }
+      };
     });
   }
   toggleOrientation() {
@@ -98,6 +133,27 @@ export default class App extends Component {
         isLoading: false
       });
     }, 10000)
+  }
+  onNestedClick(item) {
+    console.log(item);
+    if (!item.hasChildren) {
+      return;
+    }
+    this.setState({nestedLoading: true});
+    setTimeout(() => this.setState({currentParent: item, nestedLoading: false, visibleData: this.mockedItems[item.id]}), 3000);
+    return {
+      label: item.label,
+      id: item.id
+    };
+  }
+  onItemCollapse(item) {
+    console.log(item);
+    this.setState({nestedLoading: true});
+    setTimeout(() => this.setState({nestedLoading: false, visibleData: item.parentId ? this.mockedItems[item.parentId]: this.mockedItems.noParent}), 3000);
+    return item.parentId ? {
+      label: this.state.currentParent.label,
+      id: this.state.currentParent.id
+    } : void 0;
   }
   render() {
     const styles = {
@@ -117,11 +173,19 @@ export default class App extends Component {
                     <button onClick={() => this.asyncData()}>load async data</button>
                 </article>
                 <article style={constainerStyles}>
+                    <h2>more then 2 deep level</h2>
+                    <TreeBarChart className="full-width" data={this.state.visibleData} 
+                                  height="200" isLoading={this.state.nestedLoading}
+                                  onItemClick={item => this.onNestedClick(item)}
+                                  onItemExpand={(a, b) => console.log(a, b)}
+                                  onItemCollapse={item => this.onItemCollapse(item)}/>
+                </article>
+                <article style={constainerStyles}>
                     <h2>Simple use auto width size</h2>
                     <TreeBarChart className="full-width" data={this.state.data} height="200"
-                                  onItemClick={(a,b) => console.log(a,b)}
-                                  onItemExpand={(a,b) => console.log(a,b)}
-                                  onItemCollapse={(a,b) => console.log(a,b)}/>
+                                  onItemClick={(a, b) => console.log(a, b)}
+                                  onItemExpand={(a, b) => console.log(a, b)}
+                                  onItemCollapse={(a, b) => console.log(a, b)}/>
                 </article>
                 <article>
                     <h2>Simple use with async data</h2>

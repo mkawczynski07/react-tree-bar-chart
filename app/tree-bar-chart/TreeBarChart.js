@@ -25,6 +25,7 @@ class TreeBarChart extends Component {
       parentData: void 0
     };
     this.updateData = this.updateData.bind(this);
+    this.setParent = this.setParent.bind(this);
   }
   componentDidMount() {
     this.setComponentSize();
@@ -32,7 +33,7 @@ class TreeBarChart extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      this.updateData(nextProps.data);
+      this.updateData(nextProps.data, this.state.parent);
     }
   }
   onResize() {
@@ -75,6 +76,9 @@ class TreeBarChart extends Component {
       setTimeout(() => this.setState({hasData}), 500);
     }
   }
+  setParent(parent) {
+    this.setState({parent});
+  }
   render() {
     const {hasData, xAxis, unitsCount, style, data, parent, hideNoContent} = this.state;
     const {barHeight, barColor, barMargin, isLoading} = this.props;
@@ -100,9 +104,10 @@ class TreeBarChart extends Component {
                                unitsCount={unitsCount} barHeight={barHeight}
                                barColor={barColor} barMargin={barMargin}
                                setData={this.updateData} onItemClick={onItemClick} 
-                               onItemExpand={onItemExpand} />
+                               onItemExpand={onItemExpand} setParent={this.setParent} />
                 <Parent parent={parent} 
                         setData={this.updateData}
+                        setParent={this.setParent}
                         onItemCollapse={onItemCollapse}/>
                 <NoData />
                 <div className="tbc-loader" />
