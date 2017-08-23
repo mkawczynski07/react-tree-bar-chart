@@ -9,9 +9,7 @@ export default class Parent extends Component {
       setData(parent.data, void 0);
     }
     const newParent = onItemCollapse(parent);
-    if (isDefined(newParent)) {
-      setParent(parent);
-    }
+    setParent(newParent);
   }
   render() {
     const {parent} = this.props;
