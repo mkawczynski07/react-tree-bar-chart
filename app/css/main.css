@@ -1,5 +1,5 @@
 .tree-bar-chart { position: relative; overflow: hidden; display: flex; align-items: center; padding: 20px 0 32px 0; font-family: Arial; transition: min-height .3s ease;
-  .tbc-xaxis { position: absolute; top: 0; left: 140px; width: calc(100% - 180px); height: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #D8D8D8; 
+  .tbc-xaxis { position: absolute; top: 0; left: 140px; width: calc(100% - 180px); height: 100%; display: flex; justify-content: space-between;
     div { position: relative; width: 1px; height: calc(100%); transform: translateY(100%); border-left: 1px dotted #D8D8D8; transition: transform .3s .3s ease;
       &:first-child { border-left: 1px solid #D8D8D8; }    
       &:last-child { border-left: none; border-right: 1px dotted #D8D8D8; }
