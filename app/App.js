@@ -175,7 +175,7 @@ export default class App extends Component {
                 <article style={constainerStyles}>
                     <h2>more then 2 deep level</h2>
                     <TreeBarChart className="full-width" data={this.state.visibleData} 
-                                  height="200" isLoading={this.state.nestedLoading}
+                                  isLoading={this.state.nestedLoading}
                                   onItemClick={item => this.onNestedClick(item)}
                                   onItemExpand={(a, b) => console.log(a, b)}
                                   onItemCollapse={item => this.onItemCollapse(item)}/>

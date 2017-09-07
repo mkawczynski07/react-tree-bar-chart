@@ -53,19 +53,23 @@ class TreeBarChart extends Component {
     });
   }
   setComponentSize() {
-    let {width, height, unitWidth, barHeight, barMargin} = this.props;
+    let {width, height, unitWidth, barHeight, barMargin, itemsHeightAsMinHeight} = this.props;
     const itemsHeight = this.state.data.length * (barHeight + barMargin);
     this.elementRect = this.element.getBoundingClientRect();
 
     width = Number(Optional(width).or(this.elementRect.width));
     height = Number(Optional(height).or(this.elementRect.height));
 
+    const minHeight = itemsHeightAsMinHeight
+            ? itemsHeight
+            : (height < itemsHeight ? itemsHeight : height);
+
     this.setState({
       unitsCount: getUnitsCount(width, Number(unitWidth)),
       style: {
         ...this.state.styles,
         width,
-        minHeight: height < itemsHeight ? itemsHeight : height
+        minHeight
       }
     });
   }
@@ -123,6 +127,7 @@ TreeBarChart.defaultProps = {
   barMargin: 10,
   barColor: '#663399',
   isLoading: false,
+  itemsHeightAsMinHeight: true,
   onItemClick: () => {
   },
   onItemExpand: () => {
