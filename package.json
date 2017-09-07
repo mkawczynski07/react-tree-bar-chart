@@ -1,6 +1,6 @@
 {
   "name": "react-tree-bar-chart",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Tree bar chart plugin for React",
   "main": "index.js",
   "scripts": {
